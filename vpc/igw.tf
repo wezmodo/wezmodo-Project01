@@ -4,11 +4,11 @@ provider "aws" {
   # region     = "eu-west-1" 
 }
 
-  resource "aws_internet_gateway" "igw"{
-    vpc_id = "${aws_vpc.test.id}"
+  resource "aws_internet_gateway" "igw_personnal"{
+    vpc_id = "${aws_vpc.personnal.id}"
 
     tags {
-      Name = "test"
+      Name = "igw_personnal"
     }  
 
 }
