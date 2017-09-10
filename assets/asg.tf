@@ -3,11 +3,12 @@ resource "aws_launch_configuration" "web-set" {
   instance_type           = "t2.micro"
   security_groups         = ["${aws_security_group.instance.id}"]
 
-  user_data               = <<-EOF
-                              #!bin/bash
-                              echo "Hello, world" > index.html
-                              nohup busybox httpd -f -p "${var.server_port}" &
-                            EOF
+  user_data = <<-EOF
+              #!/bin/bash
+              echo "Hello, World" > index.html
+              nohup busybox httpd -f -p "${var.server_port}" &
+              EOF
+
   lifecycle {
     create_before_destroy = true
   }                            
@@ -16,6 +17,7 @@ resource "aws_launch_configuration" "web-set" {
 resource "aws_autoscaling_group" "web-group" {
   launch_configuration    = "${aws_launch_configuration.web-set.id}"
   availability_zones      = ["S{data.aws_availability_zones.all.names}"]
+  
   min_size                = 2
   max_size                = 10
 
